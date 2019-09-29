@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="org.wenjin.mapper.AdminMapper">
+  <resultMap type="Admin" id="AdminResultMap">
+ 		<id property="aid" column="aid"/>
+ 		<result property="acname" column="acname"/>
+	 	<result property="aname" column="aname"/>
+	 	<result property="apwd" column="apwd"/>
+	 	<result property="aphone" column="aphone"/>
+	 	<result property="aemail" column="aemail"/>
+	 	<result property="aimg" column="aimg"/>
+	 	<result property="createUser" column="createUser"/>
+	 	<result property="createTime" column="createTime"/>
+	 	<result property="updateUser" column="updateUser"/>
+	 	<result property="updateTime" column="updateTime"/>
+	    <collection property="lir" column="aid" select="org.wenjin.mapper.RoleMapper.selectRoleByAid"></collection>
+	    <collection property="lip" column="aid" select="org.wenjin.mapper.PowerMapper.selectPowerByAid"></collection>
+   </resultMap>
+   <select id="selectAdmin" resultMap="AdminResultMap">
+	 		select * from ts_admin where acname=#{acname} and apwd=#{apwd}
+   </select>
+   <update id="updateAdminPwd">
+   		update ts_admin set apwd=#{apwd} where aid=#{aid}
+   </update>
+   <update id="updateAdminInform">
+   		update ts_admin set aname=#{aname},aphone=#{aphone},aemail=#{aemail},updateuser=#{aname},updatetime=#{updateTime} where aid=#{aid}
+   </update>
+ 
+ </mapper>

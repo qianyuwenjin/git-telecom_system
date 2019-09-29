@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="org.wenjin.mapper.AdminUserMapper">
+ <resultMap type="Admin" id="AdminUserResultMap">
+ 		<id property="aid" column="aid"/>
+	    <collection property="lir" column="aid" select="org.wenjin.mapper.RoleMapper.selectRoleByAid"></collection>	   
+ </resultMap>
+ 		<select id="selectAdminUsers" resultMap="AdminUserResultMap">
+ 			select * from ts_admin
+ 		</select>
+ 		<insert id="insertAdminUser" parameterType="Admin" useGeneratedKeys="true" keyProperty="aid">
+ 			insert into ts_admin(aname,apwd,acname,aphone,aemail,aimg,createuser,createtime) values(#{aname},#{apwd},#{acname},#{aphone},#{aemail},#{aimg},#{createUser},#{createTime})
+ 		</insert>
+ 		<insert id="insertAdminUserRole" parameterType="Admin">
+ 			insert into ts_admin_role(aid,rid) values
+ 			 <foreach collection="lir" item="lir" separator=",">
+	 		 	(#{aid},#{lir.rid})
+	 		 </foreach>	
+ 		</insert>
+ </mapper>

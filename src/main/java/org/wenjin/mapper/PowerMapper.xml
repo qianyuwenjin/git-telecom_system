@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="org.wenjin.mapper.PowerMapper">
+ <!-- 	 <resultMap type="Power" id="PowerResultMap">
+ 		<id property="pid" column="pid"/>
+ 		<result property="pclass" column="pclass"/>
+	 	<result property="purl" column="purl"/>
+	 	<result property="pname" column="pname"/>
+	 </resultMap> -->
+ 
+ 	<select id="selectPowerByAid" resultType="Power">
+ 		select * from ts_power where pid in(select pid from ts_role_power where rid in(select rid from ts_admin_role where aid = #{aid}))
+ 	</select>
+ 	<select id="selectPowerByRid" resultType="Power">
+ 		select * from ts_power where pid in(select pid from ts_role_power where rid=#{rid}) and pxs=2
+ 	</select>
+ 	<select id="viwRolePowersByRid" resultType="Power">
+ 		select * from ts_power where pid in(select pid from ts_role_power where rid=#{rid})
+ 	</select>
+ 	<select id="selectAddPowers" resultType="Power">
+ 		select * from ts_power
+ 	</select>
+ </mapper>

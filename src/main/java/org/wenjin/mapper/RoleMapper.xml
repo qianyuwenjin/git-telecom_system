@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="org.wenjin.mapper.RoleMapper">
+ 	<resultMap type="Role" id="RoleResultMap">
+ 		<id property="rid" column="rid"/>
+ 		<result property="rname" column="rname"/>
+ 		<collection property="lp" column="rid" select="org.wenjin.mapper.PowerMapper.selectPowerByRid"></collection>
+ 	</resultMap>
+ 	<select id="selectRoleByAid" resultType="Role">
+ 		select * from ts_role where rid in(select rid from ts_admin_role where aid = #{aid})
+ 	</select> 
+ 	<select id="selectRoles" resultMap="RoleResultMap">
+	 	select * from ts_role
+	</select>
+	<insert id="insertRole" parameterType="Role" useGeneratedKeys="true" keyProperty="rid">
+	 	insert into ts_role(rname,createuser,createtime) values(#{rname},#{createUser},#{createTime})
+	</insert> 
+	<insert id="insertRolePower" parameterType="Role">
+	 	insert into ts_role_power(rid,pid) values
+	    <foreach collection="lp" item="lp" separator=",">
+	 		 (#{rid},#{lp.pid})
+	 	</foreach>
+	</insert>
+	<delete id="deleteRoleByRid">
+		delete from ts_role where rid=#{rid}
+	</delete>
+	<delete id="deleteRolePowerByRid">
+		delete from ts_role_power where rid=#{rid}
+	</delete>
+	<select id="selectRoleByRid" resultType="Role">
+		select * from ts_role where rid=#{rid}
+	</select>
+	<update id="updateRoleByRid">
+		update ts_role set rname=#{rname},updateuser=#{updateUser},updatetime=#{updateTime} where rid=#{rid}
+	</update>
+ </mapper>
